@@ -52,7 +52,7 @@ public class Sudoku {
         for (int i = 0; i < 9; ++i) {
             result |= multiplePairs(cellsInRow(i * 9));
             result |= multiplePairs(cellsInCol(i));
-            result |= multiplePairs(cellsInSqr(i * 4));
+            result |= multiplePairs(cellsInSqr(i * 9 + (i % 3) * 3));
         }
         return result;
     }
