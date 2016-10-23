@@ -42,8 +42,21 @@ public class Cell {
         return idx;
     }
 
+    public int row() {
+        return idx / 9;
+    }
+
+    public int col() {
+        return idx % 9;
+    }
     public boolean removeAll(Collection<Integer> integers) {
-        return possibleValues.removeAll(integers);
+        return !isFinal() && possibleValues.removeAll(integers);
+    }
+
+    public boolean finalValue(int value) {
+        if (isFinal()) return false;
+        possibleValues.clear();
+        return possibleValues.add(value);
     }
 
     public Collection<Integer> possibleValues() {
