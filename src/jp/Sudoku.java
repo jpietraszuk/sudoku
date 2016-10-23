@@ -78,19 +78,19 @@ public class Sudoku {
         }
         boolean result = false;
         for (Integer pv : allPV) {
-            List<Cell> containingPV = sqr.stream().filter(cell -> cell.possibleValues().contains(pv)).collect(Collectors.toList());
+            List<Cell> containingPV = sqr.stream().filter(cell -> !cell.isFinal() && cell.possibleValues().contains(pv)).collect(Collectors.toList());
             if (containingPV.size() != 2) continue;
             Set<Integer> toBeDeleted = Collections.singleton(pv);
             Set<Integer> col = containingPV.stream().map(Cell::col).collect(Collectors.toSet());
             if (col.size() == 1) {
-                List<Cell> colCells = cellsInCol(col.iterator().next()).stream().filter(cell -> !containingPV.contains(cell)).collect(Collectors.toList());
+                List<Cell> colCells = cellsInCol(containingPV.iterator().next().idx()).stream().filter(cell -> !(containingPV.contains(cell) || cell.isFinal())).collect(Collectors.toList());
                 for (Cell c : colCells) {
                     result |= c.removeAll(toBeDeleted);
                 }
             }
             Set<Integer> row = containingPV.stream().map(Cell::row).collect(Collectors.toSet());
             if (row.size() == 1) {
-                List<Cell> rowCells = cellsInRow(row.iterator().next()).stream().filter(cell -> !containingPV.contains(cell)).collect(Collectors.toList());
+                List<Cell> rowCells = cellsInRow(containingPV.iterator().next().idx()).stream().filter(cell -> !(containingPV.contains(cell) || cell.isFinal())).collect(Collectors.toList());
                 for (Cell c : rowCells) {
                     result |= c.removeAll(toBeDeleted);
                 }
